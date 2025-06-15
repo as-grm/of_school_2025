@@ -1,0 +1,20 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+snappyHexMeshConfig \
+  -baffles '(baffles)' \
+  -clearBoundary \
+  -explicitFeatures \
+  -refinementLevel 1 \
+  -surfaceLevels '((pipe 2))' \
+  -refinementRegions '((pipe 1))' \
+  -nCellsBetweenLevels 1           
+
+runApplication blockMesh
+
+runApplication surfaceFeatures
+
+runApplication snappyHexMesh -overwrite

@@ -1,0 +1,21 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      rotatingZoneProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+origin    (0 0 0);
+axis      (0 0 -1); //! left rotating propeller
+omega     constant 1500 [rpm]; //! rad/s but to have in RPM must set dimension
+nonRotatingPatches (); // List of stationary patches inside the rotatingZone
+
+// ************************************************************************* //

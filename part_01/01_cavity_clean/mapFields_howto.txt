@@ -1,0 +1,12 @@
+Mapping fields from coarse mesh to fine mesh!
+
+Help:
+foamInfo mapFields
+
+runMapFieldsConsistent()
+{
+    echo "Running mapFields from $1 to $2"
+    mapFields $1 -case $2 -sourceTime latestTime -consistent > $2/log.mapFields 2>&1
+}
+
+runMapFieldsConsistent coarseMeshCase fineMeshCase

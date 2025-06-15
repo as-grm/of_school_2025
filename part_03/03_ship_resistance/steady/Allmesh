@@ -1,0 +1,72 @@
+#!/bin/bash
+cd "${0%/*}" || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+set -e  # Exit on error
+
+usage() {
+    echo "usage: Allmesh -s {normal, fine}"
+}
+
+no_args="true"
+while getopts s: flag; do
+    case "${flag}" in
+        s)
+            size=${OPTARG}
+            if [ "$size" = "normal" ]; then
+                echo "Running NORMAL mesh size meshing ..."
+                max_el=5
+            elif [ "$size" = "fine" ]; then
+                echo "Running FINE mesh size meshing ..."
+                max_el=6
+            else
+                echo "ERROR: '${size}' is an unknown mesh size!"
+                usage
+                exit 1
+            fi
+            no_args="false"
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+[ "$no_args" = "true" ] && { usage; exit 1; }
+shift $((OPTIND - 1))
+
+# *** start meshing code ***
+
+runApplication surfaceFeatures
+runApplication blockMesh
+
+list=($(seq 1 ${max_el}))  # Creates a list from 1 to 10
+
+for i in "${list[@]}"; do
+    echo "Running mesh refinement step ${i}/${max_el}..."
+    runApplication -a foamDictionary system/refineMeshDict -entry set -set c${i}
+    runApplication -a topoSet
+    runApplication -a refineMesh -dict refineMeshDict -overwrite
+done
+
+rm -rf constant/polyMesh/sets
+
+runApplication decomposePar
+runParallel snappyHexMesh -overwrite
+runApplication reconstructPar -constant
+
+runApplication renumberMesh -noFields -overwrite
+
+rm -rf log.decomposePar
+rm -rf log.reconstructPar
+rm -rf processor*
+
+
+
+
+
+#------------------------------------------------------------------------------
+

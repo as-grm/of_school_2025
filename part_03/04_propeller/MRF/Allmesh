@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+# Example workflow with meshing applications
+runApplication snappyHexMeshConfig \
+    -cylindricalBackground \
+    -clearBoundary \
+    -rotatingZones '(rotatingZone)' \
+    -refinementLevel 1 \
+    -refinementRegions '((external 1))' \
+    -surfaceLevels '((propeller 2))' \
+    -insidePoint '(0 0 0.5)'
+    
+runApplication blockMesh
+runApplication snappyHexMesh -overwrite
+
+#------------------------------------------------------------------------------

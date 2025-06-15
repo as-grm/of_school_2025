@@ -14,8 +14,8 @@
 **Day 2 - Basics and Meshing**
  - Meshing in OpenFOAM: [BlockMesh](https://doc.cfd.direct/openfoam/user-guide-v12/blockmesh), [SnappyHexMesh](https://doc.cfd.direct/openfoam/user-guide-v12/snappyhexmesh), [GMSH](https://gmsh.info/)
  - Show how to use blockMesh: work on simple examples
- - Show how to use snappyHexkMesh: work on simple examples
  - Show how to use GMSH: work on simple examples
+ - Show how to use snappyHexkMesh: work on simple examples
  - Introduction to *Turbulent flow*
    - Basics of turbulent flow
    - Computation of turbulent mesh resolution
